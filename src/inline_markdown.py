@@ -11,7 +11,7 @@ def split_nodes_delimiter(old_nodes:list, delimiter:str, text_type:TextType) -> 
         split_nodes=[]
         sections = old_node.text.split(delimiter)    
         if len(sections) % 2 == 0:   # a properly formatted section will always result in an uneven list. e.g: **bolded** == ["","bolded",""] Therefore, 3 % 2 == 1
-            raise ValueError("invalid markdown, formatted section not closed") # "**bolded" = ["","bolded"]  because .split() splits around the delimiter
+            raise ValueError("invalid markdown, formatted section not closed") # "**bolded" = ["","bolded"]  because .split() splits around the delimiter (in this example the delimiter is "**" which is markdown for bold text)
         for i, section in enumerate(sections): 
             if section == "":
                 continue
@@ -75,6 +75,16 @@ def extract_markdown_images(text: str) -> list:
 def extract_markdown_links(text: str) -> list:
     anchor_link = re.findall(r"(?<!!)\[([^\[\]]*)\]\(([^\(\)]*)\)", text)
     return anchor_link
+
+def text_to_textnodes(text: str) -> list:
+    nodes = [TextNode(text, TextType.TEXT)]
+    nodes = split_nodes_delimiter(nodes, "**", TextType.BOLD)
+    nodes = split_nodes_delimiter(nodes, "_", TextType.ITALIC)
+    nodes = split_nodes_delimiter(nodes, "`", TextType.CODE)
+    nodes = split_nodes_image(nodes)
+    nodes = split_nodes_link(nodes)
+    return nodes
+
 
 
 
