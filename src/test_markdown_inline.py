@@ -1,6 +1,6 @@
 import unittest
 
-from inline_markdown import *
+from markdown_inline import *
 from textnode import TextNode, TextType
 
 

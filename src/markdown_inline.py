@@ -85,6 +85,23 @@ def text_to_textnodes(text: str) -> list:
     nodes = split_nodes_link(nodes)
     return nodes
 
+def test_split_links(self):
+        node = TextNode(
+            "This is text with a [link](https://www.google.com) and another [second link](https://www.youtube.com)",
+            TextType.TEXT,
+        )
+        new_nodes = split_nodes_link([node])
+        self.assertListEqual(
+            [
+                TextNode("This is text with a ", TextType.TEXT),
+                TextNode("link", TextType.LINK, "https://www.google.com"),
+                TextNode(" and another ", TextType.TEXT),
+                TextNode(
+                    "second link", TextType.LINK, "https://www.youtube.com"
+                ),
+            ],
+            new_nodes,
+        )
 
 
 
