@@ -93,13 +93,15 @@ def extract_markdown_links(text: str) -> list[tuple[str, str]]:
 	return matches
 	
 
-def main(): 
-    node = TextNode(
-        "This is text with an ![image](https://i.imgur.com/zjjcJKZ.png) and another ![second image](https://i.imgur.com/3elNhQu.png)",
-        TextType.TEXT,
-    )
-    node2 = TextNode("",TextType.TEXT)
+def text_to_textnodes(text: str) -> list[TextNode]:
+    nodes = [TextNode(text, TextType.TEXT)]
+    nodes = split_nodes_delimiter(nodes, "**", TextType.BOLD)
+    nodes = split_nodes_delimiter(nodes, "_", TextType.ITALIC)
+    nodes = split_nodes_delimiter(nodes, "`", TextType.CODE)
+    nodes = split_nodes_image(nodes)
+    nodes = split_nodes_link(nodes)
+    return nodes
     
-    new_nodes = split_nodes_image([node])
-    print(new_nodes)
-main()
+
+
+    
